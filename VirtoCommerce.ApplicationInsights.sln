@@ -1,0 +1,64 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FD9D422B-6DC9-42C1-9A44-6E200C83FBF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ApplicationInsights.Web", "src\VirtoCommerce.ApplicationInsights.Web\VirtoCommerce.ApplicationInsights.Web.csproj", "{CACAC605-7C25-45BF-B9BD-BFFB24DA6304}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ApplicationInsights.Data", "src\VirtoCommerce.ApplicationInsights.Data\VirtoCommerce.ApplicationInsights.Data.csproj", "{5A993BDD-A8E6-4B6E-9D50-5F04672EA778}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ApplicationInsights.Core", "src\VirtoCommerce.ApplicationInsights.Core\VirtoCommerce.ApplicationInsights.Core.csproj", "{A414D56A-A05D-460B-830D-17F83AA5D5CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5071D1AA-20A4-4FF3-9869-52BD5147B6FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.ApplicationInsights.Tests", "tests\VirtoCommerce.ApplicationInsights.Tests\VirtoCommerce.ApplicationInsights.Tests.csproj", "{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4CC0215-27F6-4542-911B-D0ABBECC79AF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		module.ignore = module.ignore
+		README.md = README.md
+		VirtoCommerce.ApplicationInsights.sln.DotSettings = VirtoCommerce.ApplicationInsights.sln.DotSettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CACAC605-7C25-45BF-B9BD-BFFB24DA6304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACAC605-7C25-45BF-B9BD-BFFB24DA6304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACAC605-7C25-45BF-B9BD-BFFB24DA6304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACAC605-7C25-45BF-B9BD-BFFB24DA6304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A993BDD-A8E6-4B6E-9D50-5F04672EA778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A993BDD-A8E6-4B6E-9D50-5F04672EA778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A993BDD-A8E6-4B6E-9D50-5F04672EA778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A993BDD-A8E6-4B6E-9D50-5F04672EA778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A414D56A-A05D-460B-830D-17F83AA5D5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A414D56A-A05D-460B-830D-17F83AA5D5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A414D56A-A05D-460B-830D-17F83AA5D5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A414D56A-A05D-460B-830D-17F83AA5D5CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CACAC605-7C25-45BF-B9BD-BFFB24DA6304} = {FD9D422B-6DC9-42C1-9A44-6E200C83FBF7}
+		{5A993BDD-A8E6-4B6E-9D50-5F04672EA778} = {FD9D422B-6DC9-42C1-9A44-6E200C83FBF7}
+		{A414D56A-A05D-460B-830D-17F83AA5D5CC} = {FD9D422B-6DC9-42C1-9A44-6E200C83FBF7}
+		{AC7AFE1D-40A1-44AD-81D7-D4F49E1FDF45} = {5071D1AA-20A4-4FF3-9869-52BD5147B6FD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C85EEA6-6A51-43B3-9B5F-92739D72BA23}
+	EndGlobalSection
+EndGlobal
