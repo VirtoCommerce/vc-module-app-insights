@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.300.0-alpha.12632-pt-11879" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ApplicationInsights.Core\VirtoCommerce.ApplicationInsights.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.ApplicationInsights.Data\VirtoCommerce.ApplicationInsights.Data.csproj" />
   </ItemGroup>
