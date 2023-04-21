@@ -5,6 +5,7 @@ using Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Serilog;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
@@ -56,11 +57,11 @@ public static class ApplicationBuilderExtensions
         {
             telemetryProcessorsLogInfo.Add(processor.GetType().Name, processor);
         }
-        var telemetryProcessors = Newtonsoft.Json.JsonConvert.SerializeObject(telemetryProcessorsLogInfo, Newtonsoft.Json.Formatting.Indented);
 
         if (Log.Logger != null)
         {
-            Log.Information(@"ApplicationInsights telemetry processors list and settings:{Environment.NewLine}{telemetryProcessors}{Environment.NewLine}");
+            var telemetryProcessors = JsonConvert.SerializeObject(telemetryProcessorsLogInfo, Formatting.Indented);
+            Log.Information($"ApplicationInsights telemetry processors list and settings:{Environment.NewLine}{telemetryProcessors}{Environment.NewLine}");
         }
 
         return app;
