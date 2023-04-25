@@ -11,12 +11,69 @@ Azure Application Insights module collecting metric, application telemetry data 
 * Collecting standard metric.
 * Collecting application telemetry data.
 * Collecting application trace logging data.
-* Flexable configuration by config and code.
+* Flexible configuration by config and code.
 
 
 ## Configuring
 
-The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core.
+The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core:
+
+```JSON
+{
+  "ApplicationInsights": {
+    "ConnectionString": "<Copy connection string from Application Insights Resource Overview>"
+  }
+}
+```
+
+Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsights` section: 
+
+```JSON
+{
+    "VirtoCommerce": {
+        "ApplicationInsights": {
+            "SamplingOptions": {
+                "Processor": "Adaptive",
+                "Adaptive": {
+                    "MaxTelemetryItemsPerSecond": "5",
+                    "InitialSamplingPercentage": "100",
+                    "MinSamplingPercentage": "0.1",
+                    "MaxSamplingPercentage": "100",
+                    "EvaluationInterval": "00:00:15",
+                    "SamplingPercentageDecreaseTimeout": "00:02:00",
+                    "SamplingPercentageIncreaseTimeout": "00:15:00",
+                    "MovingAverageRatio": "0.25"
+                },
+                "Fixed": {
+                    "SamplingPercentage": 90
+                },
+                "IncludedTypes": "Dependency;Event;Exception;PageView;Request;Trace",
+                "ExcludedTypes": ""
+            },
+            "EnableSqlCommandTextInstrumentation": true,
+            "IgnoreSqlTelemetryOptions": {
+                "QueryIgnoreSubstrings": [
+                    "[HangFire].",
+                    "sp_getapplock",
+                    "sp_releaseapplock"
+                ]
+            }
+        }
+    }
+}
+```
+
+`SamplingOptions.Processor`: this setting lets you chose between two sampling methods:
+* **Adaptive sampling**: automatically adjusts the volume of telemetry sent from the SDK in your ASP.NET/ASP.NET Core app, and from Azure Functions. More about this configuring this option [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sampling?tabs=net-core-new#configuring-adaptive-sampling-for-aspnet-applications). 
+* **Fixed-rate sampling**: reduces the volume of telemetry sent from both the application. Unlike adaptive sampling, it reduces telemetry at a fixed rate controlled by `SamplingPercentage` setting. 
+
+`IncludedTypes`: a semi-colon delimited list of types that you do want to subject to sampling. Recognized types are: Dependency, Event, Exception, PageView, Request, Trace. The specified types will be sampled; all telemetry of the other types will always be transmitted. All types included by default.
+
+`ExcludedTypes`: A semi-colon delimited list of types that you do not want to be subject to sampling. Recognized types are: Dependency, Event, Exception, PageView, Request, Trace. All telemetry of the specified types is transmitted; the types that aren't specified will be sampled. Empty by default.
+
+`EnableSqlCommandTextInstrumentation`: For SQL calls, the name of the server and database is always collected and stored as the name of the collected DependencyTelemetry. Another field, called data, can contain the full SQL query text. To opt in to SQL Text collection set this setting to `true`.
+
+`IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
