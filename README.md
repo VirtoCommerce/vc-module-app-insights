@@ -5,6 +5,7 @@
 Azure Application Insights module writes Virto Commerce events and telemetry to Microsoft Application Insights using Serilog. 
 
 ## Key Features
+
 * Built with [Serilog](https://serilog.net/)
 * Sends events data to Microsoft Azure Application Insights.
 * Sends telemetry data to Microsoft Azure Application Insights.
@@ -12,10 +13,9 @@ Azure Application Insights module writes Virto Commerce events and telemetry to 
 
 ## Configuring
 
-The simplest way to configure Serilog to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core.
+The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core.
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
-
 
 ## References
 * Deployment: https://docs.virtocommerce.org/developer-guide/deploy-module-from-source-code/
