@@ -9,8 +9,8 @@
         <!--<dependency id="VirtoCommerce.Core" version="3.200.4" />-->
     </dependencies>
 
-    <title>VirtoCommerce ApplicationInsights module</title>
-    <description>VirtoCommerce ApplicationInsights module</description>
+    <title>Azure Application Insights</title>
+    <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
 
     <authors>
         <author>Konstantin Savisteev</author>
