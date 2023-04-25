@@ -1,46 +1,28 @@
-# ApplicationInsights
+# Azure Application Insights Module
 
 ## Overview
 
-Short overview of what the new module is.
+Azure Application Insights module writes Virto Commerce events and telemetry to Microsoft Application Insights using Serilog. 
 
-- What is the new or updated experience?
+## Key Features
+* Built with [Serilog](https://serilog.net/)
+* Sends events data to Microsoft Azure Application Insights.
+* Sends telemetry data to Microsoft Azure Application Insights.
+* Suppors configuration by config and custom module.
 
-- Does this module replace an existing module/experience? If yes, what is the transition plan?
+## Configuring
 
-- Does this module has dependency on other ? If yes, list/explain the dependencies.
+The simplest way to configure Serilog to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core.
 
-- List the key deployment scenarios - why would people use this module?
+This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
-## Functional Requirements
 
-Short description of the new module functional requirements.
-
-## Scenarios
-
-List of scenarios that the new module implements
-
-1. [Scenario 1](/doc/scenario-name1.md)
-1. [Scenario 2](/doc/scenario-name2.md)
-1. [Scenario 3](/doc/scenario-name3.md)
-    1. [Scenario 3.1](/doc/scenario-name31.md)
-    1. [Scenario 3.2](/doc/scenario-name32.md)
-1. [Scenario 4](/doc/scenario-name4.md)
-
-## Web API
-
-Web API documentation for each module is built out automatically and can be accessed by following the link bellow:
-<https://link-to-swager-api>
-
-## Database Model
-
-![DB model](./docs/media/diagram-db-model.png)
-
-## Related topics
-
-[Some Article1](some-article1.md)
-
-[Some Article2](some-article2.md)
+## References
+* Deployment: https://docs.virtocommerce.org/developer-guide/deploy-module-from-source-code/
+* Installation: https://docs.virtocommerce.org/user-guide/modules/
+* Home: https://virtocommerce.com
+* Community: https://www.virtocommerce.org
+* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-app-insights/releases/latest)
 
 ## License
 
