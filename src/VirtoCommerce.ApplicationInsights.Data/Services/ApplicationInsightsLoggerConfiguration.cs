@@ -4,7 +4,7 @@ using VirtoCommerce.Platform.Core.Logger;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Services
 {
-    public class ApplicationInsightsLoggerConfiguration : ILoggerConfig
+    public class ApplicationInsightsLoggerConfiguration : ILoggerConfigurationService
     {
         private readonly TelemetryConfiguration _configuration;
 

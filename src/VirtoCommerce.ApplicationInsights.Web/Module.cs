@@ -22,7 +22,7 @@ public class Module : IModule, IHasConfiguration
     {
         serviceCollection.AddAppInsightsTelemetry(Configuration);
 
-        serviceCollection.AddTransient<ILoggerConfig, ApplicationInsightsLoggerConfiguration>();
+        serviceCollection.AddTransient<ILoggerConfigurationService, ApplicationInsightsLoggerConfiguration>();
     }
 
     public void PostInitialize(IApplicationBuilder appBuilder)
