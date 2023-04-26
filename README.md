@@ -14,7 +14,7 @@ Azure Application Insights module collecting metric, application telemetry data 
 * Flexible configuration by config and code.
 
 
-## Configuring
+## Configuring Telemetry
 
 The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core:
 
@@ -76,6 +76,64 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
 `IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
+
+
+## Configure Logging from configuration
+
+The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-applicationinsights) for Serilog that writes events to Microsoft Application Insights. To enable AI logging update the following `Serilog` configuration sections:
+
+```JSON
+{
+  "Serilog": {
+    "Using": [
+      "Serilog.Sinks.ApplicationInsights"
+    ],
+    "WriteTo": [
+      {
+        "Name": "ApplicationInsights",
+        "Args": {
+          "connectionString": "<Copy connection string from Application Insights Resource Overview>",
+          "telemetryConverter": "Serilog.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights"
+        }
+      }
+    ]
+  }
+}
+```
+
+The telemetryConverter has to be specified with the full type name and the assembly name. A connectionString can be omitted if it's supplied in the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
+
+## Configure Logging from code
+
+In cases where you need to configure Serilog's Application Insights sink from your code instead of the configuration file you can use special `ILoggerConfigurationService` interface:
+
+```cs
+public class ApplicationInsightsLoggerConfiguration : ILoggerConfigurationService
+{
+    private readonly TelemetryConfiguration _configuration;
+
+    public ApplicationInsightsLoggerConfiguration(TelemetryConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+    public void Configure(LoggerConfiguration loggerConfiguration)
+    {
+        loggerConfiguration.WriteTo.ApplicationInsights(telemetryConfiguration: _configuration,
+        telemetryConverter: TelemetryConverter.Traces,
+        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error);
+    }
+}
+```
+
+and register in `Module.cs` `Initialize` method:
+
+```cs
+public void Initialize(IServiceCollection serviceCollection)
+{
+    serviceCollection.AddTransient<ILoggerConfigurationService, ApplicationInsightsLoggerConfiguration>();
+}
+```
 
 ## References
 * [Application Insights Overview](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)

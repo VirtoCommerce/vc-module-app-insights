@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using VirtoCommerce.ApplicationInsights.Data.Services;
 using VirtoCommerce.ApplicationInsights.Data.Telemetry;
-using VirtoCommerce.Platform.Core.Logger;
 using VirtoCommerce.Platform.Core.Modularity;
 
 
@@ -21,8 +19,6 @@ public class Module : IModule, IHasConfiguration
     public void Initialize(IServiceCollection serviceCollection)
     {
         serviceCollection.AddAppInsightsTelemetry(Configuration);
-
-        serviceCollection.AddTransient<ILoggerConfigurationService, ApplicationInsightsLoggerConfiguration>();
     }
 
     public void PostInitialize(IApplicationBuilder appBuilder)
