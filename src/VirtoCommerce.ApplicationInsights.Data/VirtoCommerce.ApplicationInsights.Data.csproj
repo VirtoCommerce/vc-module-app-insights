@@ -22,7 +22,7 @@
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.21.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.301.0-alpha.12639-pt-11873" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.302.0" />
   </ItemGroup>
 
   <ItemGroup>
