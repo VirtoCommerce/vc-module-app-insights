@@ -1,36 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <module>
-    <id>VirtoCommerce.ApplicationInsights</id>
-    <version>3.200.0</version>
-    <version-tag></version-tag>
-
-    <platformVersion>3.302.0</platformVersion>
-    <dependencies>
-        <!--<dependency id="VirtoCommerce.Core" version="3.200.4" />-->
-    </dependencies>
-
-    <title>Azure Application Insights</title>
-    <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
-
-    <authors>
-        <author>Konstantin Savosteev</author>
-    </authors>
-    <owners>
-        <owner>VirtoCommerce</owner>
-    </owners>
-
-    <projectUrl>https://github.com/VirtoCommerce/vc-module-application-insights</projectUrl>
-    <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-
-    <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
-    <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
-
-    <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2023 VirtoCommerce. All rights reserved</copyright>
-    <tags>extension module</tags>
-    <groups>
-        <group>commerce</group>
-    </groups>
-    <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+  <id>VirtoCommerce.ApplicationInsights</id>
+  <version>3.201.0</version>
+  <version-tag></version-tag>
+  <platformVersion>3.302.0</platformVersion>
+  <dependencies>
+    <!--<dependency id="VirtoCommerce.Core" version="3.200.4" />-->
+  </dependencies>
+  <title>Azure Application Insights</title>
+  <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
+  <authors>
+    <author>Konstantin Savosteev</author>
+  </authors>
+  <owners>
+    <owner>VirtoCommerce</owner>
+  </owners>
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-application-insights</projectUrl>
+  <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.png</iconUrl>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
+  <releaseNotes>First version.</releaseNotes>
+  <copyright>Copyright © 2023 VirtoCommerce. All rights reserved</copyright>
+  <tags>extension module</tags>
+  <groups>
+    <group>commerce</group>
+  </groups>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
