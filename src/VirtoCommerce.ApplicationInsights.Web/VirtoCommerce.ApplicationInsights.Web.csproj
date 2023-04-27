@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,6 +9,10 @@
     <!-- Project is not a test project -->
     <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.302.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.ApplicationInsights.Core\VirtoCommerce.ApplicationInsights.Core.csproj" />

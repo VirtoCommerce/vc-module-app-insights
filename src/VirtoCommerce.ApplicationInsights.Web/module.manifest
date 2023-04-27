@@ -4,16 +4,16 @@
     <version>3.200.0</version>
     <version-tag></version-tag>
 
-    <platformVersion>3.253.1</platformVersion>
+    <platformVersion>3.302.0</platformVersion>
     <dependencies>
         <!--<dependency id="VirtoCommerce.Core" version="3.200.4" />-->
     </dependencies>
 
-    <title>VirtoCommerce ApplicationInsights module</title>
-    <description>VirtoCommerce ApplicationInsights module</description>
+    <title>Azure Application Insights</title>
+    <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
 
     <authors>
-        <author>Konstantin Savisteev</author>
+        <author>Konstantin Savosteev</author>
     </authors>
     <owners>
         <owner>VirtoCommerce</owner>
@@ -29,5 +29,8 @@
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright © 2023 VirtoCommerce. All rights reserved</copyright>
     <tags>extension module</tags>
+    <groups>
+        <group>commerce</group>
+    </groups>
     <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
 </module>
