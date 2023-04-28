@@ -93,7 +93,8 @@ The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-
         "Name": "ApplicationInsights",
         "Args": {
           "connectionString": "<Copy connection string from Application Insights Resource Overview>",
-          "telemetryConverter": "Serilog.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights"
+          "telemetryConverter": "Serilog.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights",
+          "restrictedToMinimumLevel": "Error"
         }
       }
     ]
