@@ -4,9 +4,8 @@
   <version>3.800.0</version>
   <version-tag>
   </version-tag>
-  <platformVersion>3.800.0-alpha.12831-net8</platformVersion>
+  <platformVersion>3.800.0</platformVersion>
   <dependencies>
-    <!--<dependency id="VirtoCommerce.Core" version="3.200.4" />-->
   </dependencies>
   <title>Azure Application Insights</title>
   <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
