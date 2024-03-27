@@ -140,7 +140,7 @@ jobs:
           
       - name: Add Jira link
         if: ${{ github.event_name == 'pull_request' }}
-        uses: VirtoCommerce/vc-github-actions/publish-jira-link@VCST-861
+        uses: VirtoCommerce/vc-github-actions/publish-jira-link@master
         with:
           branchName: ${{ github.head_ref }}
           repoOrg: ${{ github.repository_owner }}
