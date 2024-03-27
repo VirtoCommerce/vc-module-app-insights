@@ -12,6 +12,7 @@ Azure Application Insights module collecting metric, application telemetry data 
 * Collecting application telemetry data.
 * Collecting application trace logging data.
 * Flexible configuration by config and code.
+* Store Setting to configure Application Insights and specify the InstrumentationKey per store. 
 
 
 ## Configuring Telemetry
@@ -137,25 +138,20 @@ public void Initialize(IServiceCollection serviceCollection)
 ```
 
 ## References
-* [Application Insights Overview](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview)
-* [Serilog Library](https://serilog.net/)
-* Deployment: https://docs.virtocommerce.org/developer-guide/deploy-module-from-source-code/
-* Installation: https://docs.virtocommerce.org/user-guide/modules/
 * Home: https://virtocommerce.com
+* Documantation: https://docs.virtocommerce.org
 * Community: https://www.virtocommerce.org
 * [Download Latest Release](https://github.com/VirtoCommerce/vc-module-app-insights/releases/latest)
 
 ## License
-
 Copyright (c) Virto Solutions LTD.  All rights reserved.
 
-Licensed under the Virto Commerce Open Software License (the "License"); you
+This software is licensed under the Virto Commerce Open Software License (the "License"); you
 may not use this file except in compliance with the License. You may
-obtain a copy of the License at
+obtain a copy of the License at http://virtocommerce.com/opensourcelicense.
 
-<http://virtocommerce.com/opensourcelicense>
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+Unless required by the applicable law or agreed to in written form, the software
+distributed under the License is provided on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
 implied.
+
