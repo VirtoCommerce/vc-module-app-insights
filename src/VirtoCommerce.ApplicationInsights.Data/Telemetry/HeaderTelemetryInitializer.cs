@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -17,9 +18,15 @@ public class HeaderTelemetryInitializer(IHttpContextAccessor httpContextAccessor
             return;
         }
 
-        foreach (var header in context.Request.Headers)
+        AddHeaders(requestTelemetry, context.Request.Headers, "Request-Header-");
+        AddHeaders(requestTelemetry, context.Response.Headers, "Response-Header-");
+    }
+
+    private static void AddHeaders(RequestTelemetry telemetry, IHeaderDictionary headers, string prefix)
+    {
+        foreach (var (key, value) in headers.OrderBy(x => x.Key))
         {
-            requestTelemetry.Properties[$"Header-{header.Key}"] = header.Value.ToString();
+            telemetry.Properties[$"{prefix}{key}"] = value.ToString();
         }
     }
 }
