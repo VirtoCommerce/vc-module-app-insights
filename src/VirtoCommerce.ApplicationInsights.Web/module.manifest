@@ -4,7 +4,7 @@
   <version>3.802.0</version>
   <version-tag>
   </version-tag>
-  <platformVersion>3.800.0</platformVersion>
+  <platformVersion>3.853.0</platformVersion>
   <dependencies>
   </dependencies>
   <title>Azure Application Insights</title>
@@ -15,7 +15,7 @@
   <owners>
     <owner>VirtoCommerce</owner>
   </owners>
-  <projectUrl>https://github.com/VirtoCommerce/vc-module-application-insights</projectUrl>
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-app-insights</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>

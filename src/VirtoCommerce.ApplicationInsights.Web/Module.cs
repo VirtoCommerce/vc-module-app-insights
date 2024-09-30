@@ -9,7 +9,6 @@ using VirtoCommerce.ApplicationInsights.Core;
 using VirtoCommerce.ApplicationInsights.Data.Telemetry;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.StoreModule.Core.Model;
 
 
 namespace VirtoCommerce.ApplicationInsights.Web;
@@ -51,7 +50,7 @@ public class Module : IModule, IHasConfiguration
         settingsRegistrar.RegisterSettings(ModuleConstants.Settings.General.AllSettings, ModuleInfo.Id);
 
         // Register store level settings
-        settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, nameof(Store));
+        settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, "Store");
     }
 
     public void Uninstall()
