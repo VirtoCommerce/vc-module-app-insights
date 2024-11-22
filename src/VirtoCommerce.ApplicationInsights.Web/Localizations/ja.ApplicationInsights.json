@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "ApplicationInsights": {
+      "EnableTracking": {
+        "title": "Application Insightsの有効化",
+        "description": "ストアのためにAzure Application Insightsを有効化/無効化"
+      },
+      "InstrumentationKey": {
+        "title": "インストゥルメンテーションキー",
+        "description": "Azure上のAppInsightsリソースのインストゥルメンテーションキーを入力してください。デフォルト値は接続文字列から自動的に読み込まれます"
+      }
+    }
+  }
+}

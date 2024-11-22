@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "ApplicationInsights": {
+      "EnableTracking": {
+        "title": "启用Application Insights",
+        "description": "为商店启用/禁用Azure Application Insights"
+      },
+      "InstrumentationKey": {
+        "title": "仪表密钥",
+        "description": "输入Azure上AppInsights资源的仪表密钥。默认值会自动从连接字符串加载"
+      }
+    }
+  }
+}
