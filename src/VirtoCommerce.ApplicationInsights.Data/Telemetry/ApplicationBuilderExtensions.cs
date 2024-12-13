@@ -21,11 +21,16 @@ public static class ApplicationBuilderExtensions
     /// <returns></returns>
     public static IApplicationBuilder UseAppInsightsTelemetry(this IApplicationBuilder app)
     {
-        var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>() ??
-            throw new Exception("TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
+        var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+
+        if (configuration == null)
+        {
+            throw new ArgumentNullException(nameof(configuration), "TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
+        }
 
         var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
         var builder = configuration.DefaultTelemetrySink.TelemetryProcessorChainBuilder;
+
         if (samplingOptions.Processor == SamplingProcessor.Adaptive)
         {
             // Using adaptive rate sampling
