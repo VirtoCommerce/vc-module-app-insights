@@ -21,10 +21,15 @@ public static class ApplicationBuilderExtensions
     /// <returns></returns>
     public static IApplicationBuilder UseAppInsightsTelemetry(this IApplicationBuilder app)
     {
-        var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
-
         var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
 
+        if (configuration == null)
+        {
+            Log.Error("TelemetryConfiguration is not initialized. Skipping AppInsights telemetry processors configuration.");
+            return app;
+        }
+
+        var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
         var builder = configuration.DefaultTelemetrySink.TelemetryProcessorChainBuilder;
         if (samplingOptions.Processor == SamplingProcessor.Adaptive)
         {
