@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Serilog;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
+using VirtoCommerce.Platform.Core.Modularity.Exceptions;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
@@ -25,7 +26,7 @@ public static class ApplicationBuilderExtensions
 
         if (configuration == null)
         {
-            throw new ArgumentNullException(nameof(configuration), "TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
+            throw new ModuleInitializeException("TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
         }
 
         var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
