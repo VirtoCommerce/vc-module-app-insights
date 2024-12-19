@@ -2,12 +2,12 @@
 	"settings": {
 		"ApplicationInsights": {
 			"EnableTracking": {
-				"title": "Enable",
-				"description": "Activating Azure Application Insights for the Store"
+				"title": "Application Insights activation",
+				"description": "Enable/ disable Azure Application Insights for the store"
 			},
 			"InstrumentationKey": {
-				"title": "Instrumentation Key",
-				"description": "The instrumentation key of your AppInsights resource on Azure. DefaultValue is automatically loaded from the connection string."
+				"title": "Instrumentation key",
+				"description": "Enter the instrumentation key of your AppInsights resource on Azure. The default value is automatically loaded from the connection string"
 			}
 		}
 	}
