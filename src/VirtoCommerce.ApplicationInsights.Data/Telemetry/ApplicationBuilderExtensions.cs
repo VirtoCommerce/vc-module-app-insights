@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Serilog;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
+using VirtoCommerce.Platform.Core.Modularity.Exceptions;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
@@ -21,11 +22,16 @@ public static class ApplicationBuilderExtensions
     /// <returns></returns>
     public static IApplicationBuilder UseAppInsightsTelemetry(this IApplicationBuilder app)
     {
-        var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
-
         var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
 
+        if (configuration == null)
+        {
+            throw new ModuleInitializeException("TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
+        }
+
+        var samplingOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>().Value.SamplingOptions;
         var builder = configuration.DefaultTelemetrySink.TelemetryProcessorChainBuilder;
+
         if (samplingOptions.Processor == SamplingProcessor.Adaptive)
         {
             // Using adaptive rate sampling
