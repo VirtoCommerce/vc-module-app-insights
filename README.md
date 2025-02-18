@@ -1,7 +1,5 @@
 # Azure Application Insights Module
 
-## Overview
-
 The Azure Application Insights module collects metrics, application telemetry data, and application trace logs in Microsoft Azure Application Insights.
 
 ![Azure Application Insight](docs/media/app-insights-dashboard.png)
