@@ -139,7 +139,7 @@ public void Initialize(IServiceCollection serviceCollection)
 
 ## References
 * Home: https://virtocommerce.com
-* Documantation: https://docs.virtocommerce.org
+* Documentation: https://docs.virtocommerce.org/platform/user-guide/application-insights/overview/
 * Community: https://www.virtocommerce.org
 * [Download Latest Release](https://github.com/VirtoCommerce/vc-module-app-insights/releases/latest)
 
