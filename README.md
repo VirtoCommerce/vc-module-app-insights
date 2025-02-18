@@ -1,21 +1,18 @@
 # Azure Application Insights Module
 
-## Overview
-
-Azure Application Insights module collecting metric, application telemetry data and application trace logging data in Microsoft Azure Application Insights.
+The Azure Application Insights module collects metrics, application telemetry data, and application trace logs in Microsoft Azure Application Insights.
 
 ![Azure Application Insight](docs/media/app-insights-dashboard.png)
 
-## Key Features
+## Key features
 
-* Collecting standard metric.
-* Collecting application telemetry data.
-* Collecting application trace logging data.
-* Flexible configuration by config and code.
+* Collecting standard metric
+* Collecting application telemetry data
+* Collecting application trace logging data
+* Flexible configuration by config and code
 * Store Setting to configure Application Insights and specify the InstrumentationKey per store. 
 
-
-## Configuring Telemetry
+## Configuring telemetry
 
 The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core:
 
@@ -79,7 +76,7 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
 
-## Configure Logging from configuration
+## Configure logging from configuration
 
 The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-applicationinsights) for Serilog that writes events to Microsoft Application Insights. To enable AI logging update the following `Serilog` configuration sections:
 
@@ -105,7 +102,7 @@ The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-
 
 The telemetryConverter has to be specified with the full type name and the assembly name. A connectionString can be omitted if it's supplied in the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
 
-## Configure Logging from code
+## Configure logging from code
 
 In cases where you need to configure Serilog's Application Insights sink from your code instead of the configuration file you can use special `ILoggerConfigurationService` interface:
 
@@ -137,11 +134,20 @@ public void Initialize(IServiceCollection serviceCollection)
 }
 ```
 
+## Documentation
+
+* [AppInsights module user documentation](https://docs.virtocommerce.org/platform/user-guide/application-insights/overview/)
+* [REST API](https://virtostart-demo-admin.govirto.com/docs/index.html?urls.primaryName=VirtoCommerce.ApplicationInsights)
+* [App Insights configuration](https://docs.virtocommerce.org/platform/developer-guide/Configuration-Reference/appsettingsjson/#application-insights)
+* [Logging configuration](https://docs.virtocommerce.org/platform/developer-guide/Fundamentals/Logging/overview/)
+* [View on GitHub](https://github.com/VirtoCommerce/vc-module-app-insights)
+
 ## References
-* Home: https://virtocommerce.com
-* Documantation: https://docs.virtocommerce.org
-* Community: https://www.virtocommerce.org
-* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-app-insights/releases/latest)
+* [Deployment](https://docs.virtocommerce.org/platform/developer-guide/Tutorials-and-How-tos/Tutorials/deploy-module-from-source-code/)
+* [Installation](https://docs.virtocommerce.org/platform/user-guide/modules-installation/)
+* [Home](https://virtocommerce.com)
+* [Community](https://www.virtocommerce.org)
+* [Download latest release](https://github.com/VirtoCommerce/vc-module-app-insights/releases/latest)
 
 ## License
 Copyright (c) Virto Solutions LTD.  All rights reserved.
