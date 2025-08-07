@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
+
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
 public static class ServiceCollectionExtensions
@@ -23,6 +24,7 @@ public static class ServiceCollectionExtensions
         // See also the configurable settings in ApplicationInsightsServiceOptions for the most up-to-date list:
         // https://github.com/microsoft/ApplicationInsights-dotnet/blob/develop/NETCORE/src/Shared/Extensions/ApplicationInsightsServiceOptions.cs
         services.AddApplicationInsightsTelemetry();
+        services.AddServiceProfiler();
 
         // Register app insights extensions
         services.AddSingleton<ITelemetryInitializer, UserTelemetryInitializer>();
