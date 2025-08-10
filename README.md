@@ -18,13 +18,20 @@ This module helps improve visibility into your application's health and usage pa
 
 ![Azure Application Insight](docs/media/app-insights-dashboard.png)
 
+<img width="738" height="670" alt="image" src="https://github.com/user-attachments/assets/2a3f997d-5a34-4ddd-944f-4242b903d5ef" />
+
+<img width="1801" height="930" alt="image" src="https://github.com/user-attachments/assets/6054cfba-7878-4e34-8d3f-56045263daa7" />
+
+<img width="1908" height="922" alt="image" src="https://github.com/user-attachments/assets/4344f051-5fbf-4931-afbb-33902b088a89" />
+
+
 ## Setup
 
 ### Enable the Application Insights
 
 [Create an Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource?tabs=portal) in your Azure subscription.
 You can do this via the Azure Portal, Azure CLI, or ARM templates.
-Once created, you will get an Connection String or Instrumentation Key that you will use to configure the module.
+Once created, you will get an Connection String that you will use to configure the module.
 
 ### Application Insights Connection String Configuration
 
@@ -37,7 +44,6 @@ The simplest way to configure is using the `APPLICATIONINSIGHTS_CONNECTION_STRIN
 ```pwsh
 $env:APPLICATIONINSIGHTS_CONNECTION_STRING = "<Copy connection string from Application Insights Resource Overview>"
 ```
-
 
 #### Using Appsettings File
 
@@ -189,9 +195,9 @@ public void Initialize(IServiceCollection serviceCollection)
 ```
 
 ### Troubleshooting
-1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
 1. [Troubleshoot Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-troubleshoot)
 1. [Troubleshoot Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-troubleshooting)
+1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
 1. Set `Serilog__MinimumLevel__Override__Microsoft__ApplicationInsight__Profiler1 to  `Debug` to see profiler logs and errors in the console output.
 
 ## Documentation
