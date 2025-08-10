@@ -8,6 +8,10 @@
       "InstrumentationKey": {
         "title": "Ключ инструментирования",
         "description": "Введите ключ инструментирования вашего ресурса AppInsights в Azure. Значение по умолчанию загружается автоматически из строки подключения"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "URL Application Insights",
+        "description": "Внешняя ссылка на Application Insights"
       }
     }
   }

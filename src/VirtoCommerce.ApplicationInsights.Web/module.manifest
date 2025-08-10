@@ -7,8 +7,16 @@
   <platformVersion>3.853.0</platformVersion>
   <dependencies>
   </dependencies>
+  <apps>
+    <app id="app-insights">
+      <title>Application Insights</title>
+      <description>Analyze application performance, usage, and diagnostic data</description>
+      <iconUrl>/apps/app-insights/logo.svg</iconUrl>
+      <permission>application-insights:access</permission>
+    </app>
+  </apps>
   <title>Azure Application Insights</title>
-  <description>Writes logs events and telemetry to Microsoft Azure Application Insights</description>
+  <description>Enables developers and administrators to collect, monitor, and analyze application performance, usage, and diagnostic data</description>
   <authors>
     <author>Konstantin Savosteev</author>
   </authors>
@@ -21,7 +29,7 @@
   <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2025 Virto Commerce. All rights reserved</copyright>
   <tags>extension module</tags>
   <groups>
     <group>commerce</group>

@@ -8,6 +8,10 @@
       "InstrumentationKey": {
         "title": "Instrumentierungsschlüssel",
         "description": "Geben Sie den Instrumentierungsschlüssel Ihrer AppInsights-Ressource auf Azure ein. Der Standardwert wird automatisch aus der Verbindungszeichenfolge geladen"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "Application Insights-URL",
+        "description": "Externer Link zu Application Insights"
       }
     }
   }

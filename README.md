@@ -1,8 +1,9 @@
 # Azure Application Insights Module
 
-The Azure Application Insights module collects metrics, application telemetry data, and application trace logs in Microsoft Azure Application Insights.
+The Azure Application Insights module is an extension for the Virto Commerce platform designed to integrate Microsoft Application Insights telemetry into VirtoCommerce solutions.
+It enables developers and administrators to collect, monitor, and analyze application performance, usage, and diagnostic data.
 
-![Azure Application Insight](docs/media/app-insights-dashboard.png)
+This module helps improve visibility into your application's health and usage patterns, supports proactive issue detection, and facilitates troubleshooting by providing rich analytics and logging capabilities through the Application Insights service. 
 
 ## Key features
 
@@ -13,6 +14,9 @@ The Azure Application Insights module collects metrics, application telemetry da
 * Flexible configuration by config and code
 * Store Setting to configure Application Insights and specify the InstrumentationKey per store. 
 
+## Screenshots
+
+![Azure Application Insight](docs/media/app-insights-dashboard.png)
 
 ## Setup
 
@@ -173,6 +177,7 @@ public void Initialize(IServiceCollection serviceCollection)
 ```
 
 ### Troubleshooting
+1. Set `VirtoCommerce:ApplicationInsights:EnableProfiler` to `false` to disable the Application Insights Profiler feature and prevent from receiving `Instrumentation Key is empty` error if application insight is not configured.
 1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
 1. [Troubleshoot Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-troubleshoot)
 1. [Troubleshoot Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-troubleshooting)

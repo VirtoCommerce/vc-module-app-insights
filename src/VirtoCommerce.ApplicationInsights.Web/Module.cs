@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using VirtoCommerce.ApplicationInsights.Core;
 using VirtoCommerce.ApplicationInsights.Data.Telemetry;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 
 
@@ -51,6 +53,12 @@ public class Module : IModule, IHasConfiguration
 
         // Register store level settings
         settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, "Store");
+
+        // Register permissions
+        var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
+        permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions
+            .Select(x => new Permission { ModuleId = ModuleInfo.Id, GroupName = "ApplicationInsights", Name = x })
+            .ToArray());
     }
 
     public void Uninstall()
