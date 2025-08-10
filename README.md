@@ -52,9 +52,21 @@ You can configure module to using the `appsettings.json`:
 ```
 
 ### Code Optimizations
-By default, the module is configured to use the [Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview)) feature of Application Insights.
+The module is configured to use the [Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview)) feature of Application Insights.
 
 This feature allows you to collect performance data about your application and identify bottlenecks in your code.
+
+To enable Code Optimizations, you need to set the `EnableProfiler` option to `true` in the `appsettings.json` file or via environment variables.
+
+```JSON
+{
+  "VirtoCommerce": {
+    "ApplicationInsights": {
+      "EnableProfiler": true
+    }
+  }
+}
+```
 
 By default, Profiler actively collects traces every hour for 30 seconds or during periods of high CPU or memory usage for 30 seconds. The hourly traces (called sampling) are great for proactive tuning, while the high CPU and memory traces (called triggers) are useful for reactive troubleshooting.
 
@@ -113,7 +125,7 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
 
 `IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
-'EnableProfiler`: Enables the Application Insights Profiler feature (By default: true). This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
+'EnableProfiler`: Enables the Application Insights Profiler feature. This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
@@ -177,7 +189,6 @@ public void Initialize(IServiceCollection serviceCollection)
 ```
 
 ### Troubleshooting
-1. Set `VirtoCommerce:ApplicationInsights:EnableProfiler` to `false` to disable the Application Insights Profiler feature and prevent from receiving `Instrumentation Key is empty` error if application insight is not configured.
 1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
 1. [Troubleshoot Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-troubleshoot)
 1. [Troubleshoot Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-troubleshooting)

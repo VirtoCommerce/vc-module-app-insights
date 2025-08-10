@@ -28,7 +28,7 @@ public class ApplicationInsightsOptions
     /// <summary>
     /// Enable ApplicationInsights Profiler for Code Optimization
     /// </summary>
-    public bool EnableProfiler { get; set; } = true;
+    public bool EnableProfiler { get; set; }
 
     /// <summary>
     /// Cloud Role Name
