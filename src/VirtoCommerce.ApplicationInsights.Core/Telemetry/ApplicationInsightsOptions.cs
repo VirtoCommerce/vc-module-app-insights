@@ -26,6 +26,11 @@ public class ApplicationInsightsOptions
     public bool EnableSqlCommandTextInstrumentation { get; set; }
 
     /// <summary>
+    /// Enable ApplicationInsights Profiler for Code Optimization
+    /// </summary>
+    public bool EnableProfiler { get; set; } = true;
+
+    /// <summary>
     /// Cloud Role Name
     /// </summary>
     public string RoleName { get; set; }
