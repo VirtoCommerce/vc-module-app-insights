@@ -52,11 +52,11 @@ You can configure module to using the `appsettings.json`:
 ```
 
 ### Code Optimizations
-The module is configured to use the [Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview)) feature of Application Insights.
+The module is configured to use the [Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview) feature of Application Insights.
 
 This feature allows you to collect performance data about your application and identify bottlenecks in your code.
 
-To enable Code Optimizations, you need to set the `EnableProfiler` option to `true` in the `appsettings.json` file or via environment variables.
+To enable Code Optimizations, you need to set the `VirtoCommerce:ApplicationInsights:EnableProfiler` option to `true` in the `appsettings.json` file or via environment variables.
 
 ```JSON
 {
