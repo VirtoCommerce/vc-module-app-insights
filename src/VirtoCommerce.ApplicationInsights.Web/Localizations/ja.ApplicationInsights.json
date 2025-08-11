@@ -8,6 +8,10 @@
       "InstrumentationKey": {
         "title": "インストゥルメンテーションキー",
         "description": "Azure上のAppInsightsリソースのインストゥルメンテーションキーを入力してください。デフォルト値は接続文字列から自動的に読み込まれます"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "Application Insights の URL",
+        "description": "Application Insights への外部リンク"
       }
     }
   }

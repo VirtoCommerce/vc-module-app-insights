@@ -8,6 +8,10 @@
       "InstrumentationKey": {
         "title": "仪表密钥",
         "description": "输入Azure上AppInsights资源的仪表密钥。默认值会自动从连接字符串加载"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "Application Insights URL",
+        "description": "指向 Application Insights 的外部链接"
       }
     }
   }

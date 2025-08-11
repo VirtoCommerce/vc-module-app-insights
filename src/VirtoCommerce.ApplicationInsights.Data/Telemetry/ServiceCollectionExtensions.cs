@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
+
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
 public static class ServiceCollectionExtensions
@@ -17,12 +18,20 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddAppInsightsTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
+        var aiVirtoOptionsSection = configuration.GetSection("VirtoCommerce:ApplicationInsights");
+        var aiVirtoOptions = aiVirtoOptionsSection.Get<ApplicationInsightsOptions>() ?? new ApplicationInsightsOptions();
+
         // The following lines enables Application Insights telemetry collection.
         // As we use ApplicationInsights.AspNetCore SDK 2.15.0 & above, please read there about the standard way of service options configuration:
         // https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#configuration-recommendation-for-microsoftapplicationinsightsaspnetcore-sdk-2150--above
         // See also the configurable settings in ApplicationInsightsServiceOptions for the most up-to-date list:
         // https://github.com/microsoft/ApplicationInsights-dotnet/blob/develop/NETCORE/src/Shared/Extensions/ApplicationInsightsServiceOptions.cs
         services.AddApplicationInsightsTelemetry();
+
+        if (aiVirtoOptions.EnableProfiler)
+        {
+            services.AddServiceProfiler();
+        }
 
         // Register app insights extensions
         services.AddSingleton<ITelemetryInitializer, UserTelemetryInitializer>();
@@ -35,11 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddApplicationInsightsTelemetryProcessor<IgnoreSignalRTelemetryProcessor>();
 
         // Charge ApplicationInsights options to enable custom configuration of sampling processors
-        var aiVirtoOptionsSection = configuration.GetSection("VirtoCommerce:ApplicationInsights");
         services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
-
-        var aiVirtoOptions = aiVirtoOptionsSection.Get<ApplicationInsightsOptions>() ?? new ApplicationInsightsOptions();
-
         // Enable SQL dependencies filtering, if need            
         if (aiVirtoOptions.IgnoreSqlTelemetryOptions != null)
         {

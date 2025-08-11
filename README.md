@@ -1,20 +1,53 @@
 # Azure Application Insights Module
 
-The Azure Application Insights module collects metrics, application telemetry data, and application trace logs in Microsoft Azure Application Insights.
+The Azure Application Insights module is an extension for the Virto Commerce platform designed to integrate Microsoft Application Insights telemetry into VirtoCommerce solutions.
+It enables developers and administrators to collect, monitor, and analyze application performance, usage, and diagnostic data.
 
-![Azure Application Insight](docs/media/app-insights-dashboard.png)
+This module helps improve visibility into your application's health and usage patterns, supports proactive issue detection, and facilitates troubleshooting by providing rich analytics and logging capabilities through the Application Insights service. 
 
 ## Key features
 
 * Collecting standard metric
+* Supports Code Optimizations and Application Insights Profiler
 * Collecting application telemetry data
 * Collecting application trace logging data
 * Flexible configuration by config and code
 * Store Setting to configure Application Insights and specify the InstrumentationKey per store. 
 
-## Configuring telemetry
+## Screenshots
 
-The simplest way to configure module to send data to an Application Insights dashboard via instrumentation key is to use current active telemetry configuration which is already initialized in most application types like ASP.NET Core:
+![Azure Application Insight](docs/media/app-insights-dashboard.png)
+
+<img width="738" height="670" alt="image" src="https://github.com/user-attachments/assets/2a3f997d-5a34-4ddd-944f-4242b903d5ef" />
+
+<img width="1801" height="930" alt="image" src="https://github.com/user-attachments/assets/6054cfba-7878-4e34-8d3f-56045263daa7" />
+
+<img width="1908" height="922" alt="image" src="https://github.com/user-attachments/assets/4344f051-5fbf-4931-afbb-33902b088a89" />
+
+
+## Setup
+
+### Enable the Application Insights
+
+[Create an Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource?tabs=portal) in your Azure subscription.
+You can do this via the Azure Portal, Azure CLI, or ARM templates.
+Once created, you will get an Connection String that you will use to configure the module.
+
+### Application Insights Connection String Configuration
+
+The module can be configured via the environment variables or `appsettings.json` file. The configuration options are described in the next sections.
+
+#### Using Environment Variables
+
+The simplest way to configure is using the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable to configure the Application Insights connection string:
+
+```pwsh
+$env:APPLICATIONINSIGHTS_CONNECTION_STRING = "<Copy connection string from Application Insights Resource Overview>"
+```
+
+#### Using Appsettings File
+
+You can configure module to using the `appsettings.json`:
 
 ```JSON
 {
@@ -24,6 +57,30 @@ The simplest way to configure module to send data to an Application Insights das
 }
 ```
 
+### Code Optimizations
+The module is configured to use the [Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-profiler-overview) feature of Application Insights.
+
+This feature allows you to collect performance data about your application and identify bottlenecks in your code.
+
+To enable Code Optimizations, you need to set the `VirtoCommerce:ApplicationInsights:EnableProfiler` option to `true` in the `appsettings.json` file or via environment variables.
+
+```JSON
+{
+  "VirtoCommerce": {
+    "ApplicationInsights": {
+      "EnableProfiler": true
+    }
+  }
+}
+```
+
+By default, Profiler actively collects traces every hour for 30 seconds or during periods of high CPU or memory usage for 30 seconds. The hourly traces (called sampling) are great for proactive tuning, while the high CPU and memory traces (called triggers) are useful for reactive troubleshooting.
+
+## Configuration
+
+The following sections describe how to use extended configuration options of the module. The configuration can be done via `appsettings.json` file or by using code.
+
+### Application Insights Configuration
 Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsights` section: 
 
 ```JSON
@@ -48,6 +105,7 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
                 "IncludedTypes": "Dependency;Event;Exception;PageView;Request;Trace",
                 "ExcludedTypes": ""
             },
+            "EnableProfiler": true,
             "EnableSqlCommandTextInstrumentation": true,
             "IgnoreSqlTelemetryOptions": {
                 "QueryIgnoreSubstrings": [
@@ -73,10 +131,12 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
 
 `IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
+'EnableProfiler`: Enables the Application Insights Profiler feature. This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
+
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
 
-## Configure logging from configuration
+### Logging Configuration
 
 The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-applicationinsights) for Serilog that writes events to Microsoft Application Insights. To enable AI logging update the following `Serilog` configuration sections:
 
@@ -102,7 +162,7 @@ The module comes with a [sink](https://github.com/serilog-contrib/serilog-sinks-
 
 The telemetryConverter has to be specified with the full type name and the assembly name. A connectionString can be omitted if it's supplied in the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable.
 
-## Configure logging from code
+### Configure Logging From Code
 
 In cases where you need to configure Serilog's Application Insights sink from your code instead of the configuration file you can use special `ILoggerConfigurationService` interface:
 
@@ -134,11 +194,16 @@ public void Initialize(IServiceCollection serviceCollection)
 }
 ```
 
-## Documentation
+### Troubleshooting
+1. [Troubleshoot Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-troubleshoot)
+1. [Troubleshoot Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-troubleshooting)
+1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
+1. Set `Serilog__MinimumLevel__Override__Microsoft__ApplicationInsight__Profiler1 to  `Debug` to see profiler logs and errors in the console output.
 
+## Documentation
 * [AppInsights module user documentation](https://docs.virtocommerce.org/platform/user-guide/application-insights/overview/)
-* [REST API](https://virtostart-demo-admin.govirto.com/docs/index.html?urls.primaryName=VirtoCommerce.ApplicationInsights)
 * [App Insights configuration](https://docs.virtocommerce.org/platform/developer-guide/Configuration-Reference/appsettingsjson/#application-insights)
+* [Configure Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-settings)
 * [Logging configuration](https://docs.virtocommerce.org/platform/developer-guide/Fundamentals/Logging/overview/)
 * [View on GitHub](https://github.com/VirtoCommerce/vc-module-app-insights)
 
