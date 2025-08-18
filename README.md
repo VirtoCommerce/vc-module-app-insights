@@ -27,7 +27,7 @@ This module helps improve visibility into your application's health and usage pa
 
 ## Setup
 
-### Enable the Application Insights
+### Enable Application Insights
 
 [Create an Application Insights resource](https://learn.microsoft.com/en-us/azure/azure-monitor/app/create-workspace-resource?tabs=portal) in your Azure subscription.
 You can do this via the Azure Portal, Azure CLI, or ARM templates.
@@ -81,7 +81,7 @@ By default, Profiler actively collects traces every hour for 30 seconds or durin
 The following sections describe how to use extended configuration options of the module. The configuration can be done via `appsettings.json` file or by using code.
 
 ### Application Insights Configuration
-Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsights` section: 
+Configure Platform Application Insights telemetry behavior inside the `VirtoCommerce:ApplicationInsights` section: 
 
 ```JSON
 {
@@ -131,7 +131,7 @@ Configure Platform AP telemetry behavior inside `VirtoCommerce:ApplicationInsigh
 
 `IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
-'EnableProfiler`: Enables the Application Insights Profiler feature. This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
+`EnableProfiler`: Enables the Application Insights Profiler feature. This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
