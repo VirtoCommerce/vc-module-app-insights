@@ -2,7 +2,7 @@
 	"settings": {
     "ApplicationInsights": {
       "EnableTracking": {
-        "title": "Application Insights activation",
+        "title": "Application Insights",
         "description": "Enable/ disable Azure Application Insights for the store"
       },
       "InstrumentationKey": {
@@ -11,7 +11,7 @@
       },
       "ApplicationInsightsUrl": {
         "title": "Application Insights URL",
-        "description": "External link on Application Insights"
+        "description": "Link to the Application Insights resource"
       }
     }
 	}
