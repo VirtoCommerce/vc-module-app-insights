@@ -1,0 +1,18 @@
+{
+	"settings": {
+    "ApplicationInsights": {
+      "EnableTracking": {
+        "title": "Aktivering av Application Insights",
+        "description": "Aktivera eller inaktivera Azure Application Insights för butiken"
+      },
+      "InstrumentationKey": {
+        "title": "Instrumenteringsnyckel",
+        "description": "Ange instrumenteringsnyckeln för din AppInsights-resurs på Azure. Standardvärdet laddas automatiskt från anslutningssträngen"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "Application Insights URL",
+        "description": "Extern länk till Application Insights"
+      }
+    }
+	}
+}
