@@ -1,0 +1,18 @@
+{
+	"settings": {
+    "ApplicationInsights": {
+      "EnableTracking": {
+        "title": "Application Insights -aktivointi",
+        "description": "Ota käyttöön tai poista käytöstä Azure Application Insights kaupalle"
+      },
+      "InstrumentationKey": {
+        "title": "Instrumentointiavain",
+        "description": "Syötä Azure AppInsights -resurssisi instrumentointiavain. Oletusarvo ladataan automaattisesti yhteysmerkkijonosta"
+      },
+      "ApplicationInsightsUrl": {
+        "title": "Application Insights -URL",
+        "description": "Ulkoinen linkki Application Insightsiin"
+      }
+    }
+	}
+}
