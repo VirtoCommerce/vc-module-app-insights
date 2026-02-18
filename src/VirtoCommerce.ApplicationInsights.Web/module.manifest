@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
   <id>VirtoCommerce.ApplicationInsights</id>
-  <version>3.808.0</version>
+  <version>3.1000.0</version>
   <version-tag>
   </version-tag>
-  <platformVersion>3.917.0</platformVersion>
+  <platformVersion>3.1002.0</platformVersion>
   <dependencies>
   </dependencies>
   <apps>
@@ -29,7 +29,7 @@
   <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
   <releaseNotes>First version.</releaseNotes>
-  <copyright>Copyright © 2011-2025 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2026 Virto Commerce. All rights reserved</copyright>
   <tags>extension module</tags>
   <groups>
     <group>commerce</group>
