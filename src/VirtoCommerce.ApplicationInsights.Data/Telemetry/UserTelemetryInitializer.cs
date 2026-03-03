@@ -1,15 +1,15 @@
-using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.Extensibility;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using OpenTelemetry;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
 /// <summary>
-/// A telemetry initializer that will gather user identity context information.
+/// An OpenTelemetry processor that enriches activities with user identity and cloud role context.
 /// </summary>
-public class UserTelemetryInitializer : ITelemetryInitializer
+public class UserTelemetryInitializer : BaseProcessor<Activity>
 {
     private readonly ApplicationInsightsOptions _options;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,22 +20,21 @@ public class UserTelemetryInitializer : ITelemetryInitializer
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public void Initialize(ITelemetry telemetry)
+    public override void OnEnd(Activity activity)
     {
         var userId = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
 
         if (userId != null)
         {
-            telemetry.Context.User.AuthenticatedUserId = userId;
+            activity?.SetTag("enduser.id", userId);
         }
         if (!string.IsNullOrEmpty(_options.RoleName))
         {
-            telemetry.Context.Cloud.RoleName = _options.RoleName;
+            activity?.SetTag("cloud.role_name", _options.RoleName);
         }
-
         if (!string.IsNullOrEmpty(_options.RoleInstance))
         {
-            telemetry.Context.Cloud.RoleInstance = _options.RoleInstance;
+            activity?.SetTag("cloud.role_instance", _options.RoleInstance);
         }
     }
 }

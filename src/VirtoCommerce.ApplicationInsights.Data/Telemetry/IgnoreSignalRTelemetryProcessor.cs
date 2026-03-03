@@ -1,30 +1,20 @@
-using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
+using System;
+using System.Diagnostics;
+using OpenTelemetry;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
 /// <summary>
-/// Application insight telemetry processor which exclude all SignalR requests from statistic.
+/// OpenTelemetry processor which excludes all SignalR requests from telemetry.
 /// </summary>
-public class IgnoreSignalRTelemetryProcessor : ITelemetryProcessor
+public class IgnoreSignalRTelemetryProcessor : BaseProcessor<Activity>
 {
-    private ITelemetryProcessor Next { get; set; }
-
-    // Link processors to each other in a chain.
-    public IgnoreSignalRTelemetryProcessor(ITelemetryProcessor next)
+    public override void OnEnd(Activity activity)
     {
-        Next = next;
-    }
-
-    public void Process(ITelemetry item)
-    {
-        if (item is RequestTelemetry request && request.Url.AbsolutePath.ToLowerInvariant().Contains("/pushnotificationhub"))
+        var urlPath = activity?.GetTagItem("url.path")?.ToString();
+        if (urlPath != null && urlPath.Contains("/pushnotificationhub", StringComparison.OrdinalIgnoreCase))
         {
-            // To filter out an item, just terminate the chain:
-            return;
+            activity.ActivityTraceFlags &= ~ActivityTraceFlags.Recorded;
         }
-        // Send everything else:
-        Next.Process(item);
     }
 }
