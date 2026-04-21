@@ -1,9 +1,6 @@
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using OpenTelemetry;
 using OpenTelemetry.Trace;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
@@ -58,6 +55,9 @@ public static class ServiceCollectionExtensions
             {
                 // Always ignore SignalR telemetry
                 tracing.AddProcessor(new IgnoreSignalRTelemetryProcessor());
+
+                // Configurable activity ignore
+                tracing.AddProcessor<IgnoreActivitiesByNameProcessor>();
             });
 
         // Register processors that need DI via post-configure
