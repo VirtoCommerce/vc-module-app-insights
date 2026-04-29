@@ -55,9 +55,6 @@ public static class ServiceCollectionExtensions
             {
                 // Always ignore SignalR telemetry
                 tracing.AddProcessor(new IgnoreSignalRTelemetryProcessor());
-
-                // Configurable activity ignore
-                tracing.AddProcessor<IgnoreActivitiesByNameProcessor>();
             });
 
         // Register processors that need DI via post-configure
