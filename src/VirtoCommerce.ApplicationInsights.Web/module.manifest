@@ -24,7 +24,7 @@
     <owner>VirtoCommerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-app-insights</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
