@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
   <id>VirtoCommerce.ApplicationInsights</id>
-  <version>3.1002.0</version>
+  <version>3.1004.0</version>
   <version-tag>
   </version-tag>
   <platformVersion>3.1020.0</platformVersion>
@@ -24,7 +24,7 @@
     <owner>VirtoCommerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-app-insights</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.ApplicationInsights)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <assemblyFile>VirtoCommerce.ApplicationInsights.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.ApplicationInsights.Web.Module, VirtoCommerce.ApplicationInsights.Web</moduleType>
