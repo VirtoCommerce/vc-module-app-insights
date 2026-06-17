@@ -22,19 +22,26 @@ public class UserTelemetryInitializer : BaseProcessor<Activity>
 
     public override void OnEnd(Activity activity)
     {
+        if (activity == null)
+        {
+            return;
+        }
+
         var userId = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
 
         if (userId != null)
         {
-            activity?.SetTag("enduser.id", userId);
+            activity.SetTag("enduser.id", userId);
         }
+
         if (!string.IsNullOrEmpty(_options.RoleName))
         {
-            activity?.SetTag("cloud.role_name", _options.RoleName);
+            activity.SetTag("cloud.role_name", _options.RoleName);
         }
+
         if (!string.IsNullOrEmpty(_options.RoleInstance))
         {
-            activity?.SetTag("cloud.role_instance", _options.RoleInstance);
+            activity.SetTag("cloud.role_instance", _options.RoleInstance);
         }
     }
 }
