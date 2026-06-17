@@ -1,11 +1,8 @@
 using System.Linq;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using VirtoCommerce.ApplicationInsights.Core;
 using VirtoCommerce.ApplicationInsights.Data.Telemetry;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -30,21 +27,19 @@ public class Module : IModule, IHasConfiguration
     {
         var serviceProvider = appBuilder.ApplicationServices;
 
-        var enviroment = appBuilder.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-        if (enviroment.IsDevelopment())
-        {
-#if DEBUG
-            TelemetryDebugWriter.IsTracingDisabled = true;
-#endif
-        }
-
         appBuilder.UseAppInsightsTelemetry();
 
-        // Resolve Default InstrumentationKey from TelemetryConfiguration
+        // Extract InstrumentationKey from ConnectionString (InstrumentationKey property removed in 3.x)
+        // The key is still needed by VueJS frontend applications
         var configuration = appBuilder.ApplicationServices.GetService<TelemetryConfiguration>();
-        if (configuration != null)
+        if (configuration?.ConnectionString != null)
         {
-            ModuleConstants.Settings.General.InstrumentationKey.DefaultValue = configuration.InstrumentationKey;
+            var instrumentationKey = GetInstrumentationKey(configuration);
+
+            if (!string.IsNullOrEmpty(instrumentationKey))
+            {
+                ModuleConstants.Settings.General.InstrumentationKey.DefaultValue = instrumentationKey;
+            }
         }
 
         // Register settings
@@ -59,6 +54,16 @@ public class Module : IModule, IHasConfiguration
         permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions
             .Select(x => new Permission { ModuleId = ModuleInfo.Id, GroupName = "ApplicationInsights", Name = x })
             .ToArray());
+    }
+
+    private static string GetInstrumentationKey(TelemetryConfiguration configuration)
+    {
+        return configuration.ConnectionString
+                        .Split(';')
+                        .Select(part => part.Split('=', 2))
+                        .Where(kv => kv.Length == 2 && kv[0].Equals("InstrumentationKey", System.StringComparison.OrdinalIgnoreCase))
+                        .Select(kv => kv[1])
+                        .FirstOrDefault();
     }
 
     public void Uninstall()
