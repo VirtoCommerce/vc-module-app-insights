@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using OpenTelemetry.Trace;
 using Serilog;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
-using VirtoCommerce.Platform.Core.Modularity.Exceptions;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
@@ -22,7 +21,11 @@ public static class ApplicationBuilderExtensions
 
         if (configuration == null)
         {
-            throw new ModuleInitializeException("TelemetryConfiguration is not initialized. Please make sure that another module doesn't override AppInsightsTelemetry.");
+            // No connection string configured -> Application Insights telemetry was not registered
+            // (see AddAppInsightsTelemetry). The module is installed but telemetry is disabled,
+            // so there is nothing to wire up here. This is a supported, non-error scenario.
+            Log.Information("ApplicationInsights connection string is not configured, telemetry is disabled.");
+            return app;
         }
 
         var aiOptions = app.ApplicationServices.GetRequiredService<IOptions<ApplicationInsightsOptions>>();

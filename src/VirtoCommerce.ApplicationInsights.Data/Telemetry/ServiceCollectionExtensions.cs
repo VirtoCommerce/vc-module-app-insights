@@ -1,3 +1,4 @@
+using System;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,17 @@ public static class ServiceCollectionExtensions
     {
         var aiVirtoOptionsSection = configuration.GetSection("VirtoCommerce:ApplicationInsights");
         var aiVirtoOptions = aiVirtoOptionsSection.Get<ApplicationInsightsOptions>() ?? new ApplicationInsightsOptions();
+
+        // Charge ApplicationInsights options to enable custom configuration
+        services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
+
+        // Skip telemetry registration entirely when the connection string is absent so the
+        // module can be installed without one and the application still starts (like in 2.x version).
+        // See https://learn.microsoft.com/en-us/azure/azure-monitor/app/migrate-to-opentelemetry
+        if (!HasConnectionString(configuration))
+        {
+            return services;
+        }
 
         // Configure sampling via ApplicationInsightsServiceOptions (Application Insights 3.0).
         // In 3.0, adaptive sampling is replaced by rate-limited sampling (TracesPerSecond),
@@ -44,9 +56,6 @@ public static class ServiceCollectionExtensions
             services.AddServiceProfiler();
         }
 
-        // Charge ApplicationInsights options to enable custom configuration
-        services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
-
         // Register OpenTelemetry activity processors
         // (replacing ITelemetryProcessor/ITelemetryInitializer from 2.x)
         // See https://github.com/microsoft/ApplicationInsights-dotnet/blob/main/BreakingChanges.md
@@ -65,5 +74,18 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<UserTelemetryInitializer>();
 
         return services;
+    }
+
+    /// <summary>
+    /// Returns true when an Application Insights connection string is configured, either via the
+    /// "ApplicationInsights:ConnectionString" configuration key or the
+    /// APPLICATIONINSIGHTS_CONNECTION_STRING environment variable (the two sources the SDK reads).
+    /// </summary>
+    private static bool HasConnectionString(IConfiguration configuration)
+    {
+        var connectionString = configuration["ApplicationInsights:ConnectionString"]
+            ?? Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+
+        return !string.IsNullOrEmpty(connectionString);
     }
 }
