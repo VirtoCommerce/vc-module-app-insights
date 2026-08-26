@@ -13,29 +13,20 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Charge AppInsights options and add the telemetry
     /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <returns></returns>
     public static IServiceCollection AddAppInsightsTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
         var aiVirtoOptionsSection = configuration.GetSection("VirtoCommerce:ApplicationInsights");
         var aiVirtoOptions = aiVirtoOptionsSection.Get<ApplicationInsightsOptions>() ?? new ApplicationInsightsOptions();
 
-        // Charge ApplicationInsights options to enable custom configuration
         services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
 
-        // Skip telemetry registration entirely when the connection string is absent so the
-        // module can be installed without one and the application still starts (like in 2.x version).
-        // See https://learn.microsoft.com/en-us/azure/azure-monitor/app/migrate-to-opentelemetry
+        // Skip telemetry registration entirely when the connection string is absent
         if (!HasConnectionString(configuration))
         {
             return services;
         }
 
-        // Configure sampling via ApplicationInsightsServiceOptions (Application Insights 3.0).
-        // In 3.0, adaptive sampling is replaced by rate-limited sampling (TracesPerSecond),
-        // and fixed sampling uses SamplingRatio (0.0-1.0) instead of SamplingPercentage (0-100).
-        // See https://learn.microsoft.com/en-us/azure/azure-monitor/app/migrate-to-opentelemetry
+        // Sampling configuration
         services.Configure<ApplicationInsightsServiceOptions>(o =>
         {
             if (aiVirtoOptions.SamplingOptions.Processor == SamplingProcessor.Adaptive)
@@ -44,6 +35,7 @@ public static class ServiceCollectionExtensions
             }
             else
             {
+                // Fixed sampling uses SamplingRatio(0.0 - 1.0) instead of SamplingPercentage(0 - 100)
                 o.SamplingRatio = (float)(aiVirtoOptions.SamplingOptions.Fixed.SamplingPercentage / 100.0);
             }
         });
@@ -56,14 +48,17 @@ public static class ServiceCollectionExtensions
             services.AddServiceProfiler();
         }
 
-        // Register OpenTelemetry activity processors
-        // (replacing ITelemetryProcessor/ITelemetryInitializer from 2.x)
-        // See https://github.com/microsoft/ApplicationInsights-dotnet/blob/main/BreakingChanges.md
+        // OpenTelemetry activity processors replaces ITelemetryProcessor/ITelemetryInitializer from 2.x
         services.AddOpenTelemetry()
             .WithTracing(tracing =>
             {
                 // Always ignore SignalR telemetry
                 tracing.AddProcessor(new IgnoreSignalRTelemetryProcessor());
+                tracing.AddSource("VirtoCommerce.*");
+            })
+            .WithMetrics(meter =>
+            {
+                meter.AddMeter("VirtoCommerce.*");
             });
 
         // Register processors that need DI via post-configure
@@ -76,11 +71,6 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Returns true when an Application Insights connection string is configured, either via the
-    /// "ApplicationInsights:ConnectionString" configuration key or the
-    /// APPLICATIONINSIGHTS_CONNECTION_STRING environment variable (the two sources the SDK reads).
-    /// </summary>
     private static bool HasConnectionString(IConfiguration configuration)
     {
         var connectionString = configuration["ApplicationInsights:ConnectionString"]

@@ -11,8 +11,7 @@ namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 public static class ApplicationBuilderExtensions
 {
     /// <summary>
-    /// Configure AppInsights telemetry with OpenTelemetry processors.
-    /// In Application Insights 3.0, custom processors replace ITelemetryProcessor/ITelemetryInitializer.
+    /// Configure AppInsights telemetry with OpenTelemetry processors. In Application Insights 3.0, custom processors replace ITelemetryProcessor/ITelemetryInitializer.
     /// See https://github.com/microsoft/ApplicationInsights-dotnet/blob/main/BreakingChanges.md
     /// </summary>
     public static IApplicationBuilder UseAppInsightsTelemetry(this IApplicationBuilder app)
@@ -22,8 +21,6 @@ public static class ApplicationBuilderExtensions
         if (configuration == null)
         {
             // No connection string configured -> Application Insights telemetry was not registered
-            // (see AddAppInsightsTelemetry). The module is installed but telemetry is disabled,
-            // so there is nothing to wire up here. This is a supported, non-error scenario.
             Log.Information("ApplicationInsights connection string is not configured, telemetry is disabled.");
             return app;
         }
