@@ -1,5 +1,3 @@
-using Microsoft.ApplicationInsights.WindowsServer.Channel.Implementation;
-
 namespace VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
 /// <summary>
@@ -12,9 +10,10 @@ public class SamplingOptions
     /// </summary>
     public SamplingProcessor Processor { get; set; } = SamplingProcessor.Adaptive;
     /// <summary>
-    /// Adaptive sampling settings (if Processor==SamplingProcessor.Adaptive)
+    /// Adaptive sampling settings (if Processor==SamplingProcessor.Adaptive).
+    /// In Application Insights 3.0, adaptive sampling is replaced by rate-limited sampling (TracesPerSecond).
     /// </summary>
-    public SamplingPercentageEstimatorSettings Adaptive { get; set; } = new SamplingPercentageEstimatorSettings();
+    public AdaptiveSamplingSettings Adaptive { get; set; } = new AdaptiveSamplingSettings();
     /// <summary>
     /// Fixed sampling settings (if Processor==SamplingProcessor.Fixed)
     /// </summary>

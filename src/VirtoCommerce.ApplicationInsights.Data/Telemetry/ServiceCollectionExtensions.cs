@@ -1,8 +1,8 @@
+using System;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using Microsoft.ApplicationInsights.DependencyCollector;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenTelemetry.Trace;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
 
@@ -13,19 +13,34 @@ public static class ServiceCollectionExtensions
     /// <summary>
     /// Charge AppInsights options and add the telemetry
     /// </summary>
-    /// <param name="services"></param>
-    /// <param name="configuration"></param>
-    /// <returns></returns>
     public static IServiceCollection AddAppInsightsTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
         var aiVirtoOptionsSection = configuration.GetSection("VirtoCommerce:ApplicationInsights");
         var aiVirtoOptions = aiVirtoOptionsSection.Get<ApplicationInsightsOptions>() ?? new ApplicationInsightsOptions();
 
-        // The following lines enables Application Insights telemetry collection.
-        // As we use ApplicationInsights.AspNetCore SDK 2.15.0 & above, please read there about the standard way of service options configuration:
-        // https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core#configuration-recommendation-for-microsoftapplicationinsightsaspnetcore-sdk-2150--above
-        // See also the configurable settings in ApplicationInsightsServiceOptions for the most up-to-date list:
-        // https://github.com/microsoft/ApplicationInsights-dotnet/blob/develop/NETCORE/src/Shared/Extensions/ApplicationInsightsServiceOptions.cs
+        services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
+
+        // Skip telemetry registration entirely when the connection string is absent
+        if (!HasConnectionString(configuration))
+        {
+            return services;
+        }
+
+        // Sampling configuration
+        services.Configure<ApplicationInsightsServiceOptions>(o =>
+        {
+            if (aiVirtoOptions.SamplingOptions.Processor == SamplingProcessor.Adaptive)
+            {
+                o.TracesPerSecond = aiVirtoOptions.SamplingOptions.Adaptive.MaxTelemetryItemsPerSecond;
+            }
+            else
+            {
+                // Fixed sampling uses SamplingRatio(0.0 - 1.0) instead of SamplingPercentage(0 - 100)
+                o.SamplingRatio = (float)(aiVirtoOptions.SamplingOptions.Fixed.SamplingPercentage / 100.0);
+            }
+        });
+
+        // The following line enables Application Insights telemetry collection.
         services.AddApplicationInsightsTelemetry();
 
         if (aiVirtoOptions.EnableProfiler)
@@ -33,28 +48,34 @@ public static class ServiceCollectionExtensions
             services.AddServiceProfiler();
         }
 
-        // Register app insights extensions
-        services.AddSingleton<ITelemetryInitializer, UserTelemetryInitializer>();
+        // OpenTelemetry activity processors replaces ITelemetryProcessor/ITelemetryInitializer from 2.x
+        services.AddOpenTelemetry()
+            .WithTracing(tracing =>
+            {
+                // Always ignore SignalR telemetry
+                tracing.AddProcessor(new IgnoreSignalRTelemetryProcessor());
+                tracing.AddSource("VirtoCommerce.*");
+            })
+            .WithMetrics(meter =>
+            {
+                meter.AddMeter("VirtoCommerce.*");
+            });
 
-        // Disable adaptive sampling before custom configuration to have a choice between processors in Configure,
-        // according to instructions: https://docs.microsoft.com/en-us/azure/azure-monitor/app/sampling#configure-sampling-settings
-        services.Configure((ApplicationInsightsServiceOptions o) => o.EnableAdaptiveSampling = false);
-
-        // Always ignore SignalRTelemetry
-        services.AddApplicationInsightsTelemetryProcessor<IgnoreSignalRTelemetryProcessor>();
-
-        // Charge ApplicationInsights options to enable custom configuration of sampling processors
-        services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
-        // Enable SQL dependencies filtering, if need            
+        // Register processors that need DI via post-configure
         if (aiVirtoOptions.IgnoreSqlTelemetryOptions != null)
         {
-            services.AddApplicationInsightsTelemetryProcessor<IgnoreSqlTelemetryProcessor>();
+            services.AddSingleton<IgnoreSqlTelemetryProcessor>();
         }
-
-        // Force SQL reflection in dependencies, if need
-        // See instructions here: https://docs.microsoft.com/en-us/azure/azure-monitor/app/asp-net-dependencies#advanced-sql-tracking-to-get-full-sql-query
-        services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = aiVirtoOptions.EnableSqlCommandTextInstrumentation || aiVirtoOptions.EnableLocalSqlCommandTextInstrumentation; });
+        services.AddSingleton<UserTelemetryInitializer>();
 
         return services;
+    }
+
+    private static bool HasConnectionString(IConfiguration configuration)
+    {
+        var connectionString = configuration["ApplicationInsights:ConnectionString"]
+            ?? Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+
+        return !string.IsNullOrEmpty(connectionString);
     }
 }

@@ -81,7 +81,7 @@ By default, Profiler actively collects traces every hour for 30 seconds or durin
 The following sections describe how to use extended configuration options of the module. The configuration can be done via `appsettings.json` file or by using code.
 
 ### Application Insights Configuration
-Configure Platform Application Insights telemetry behavior inside the `VirtoCommerce:ApplicationInsights` section: 
+Configure Platform Application Insights telemetry behavior inside the `VirtoCommerce:ApplicationInsights` section:
 
 ```JSON
 {
@@ -90,20 +90,11 @@ Configure Platform Application Insights telemetry behavior inside the `VirtoComm
             "SamplingOptions": {
                 "Processor": "Adaptive",
                 "Adaptive": {
-                    "MaxTelemetryItemsPerSecond": "5",
-                    "InitialSamplingPercentage": "100",
-                    "MinSamplingPercentage": "0.1",
-                    "MaxSamplingPercentage": "100",
-                    "EvaluationInterval": "00:00:15",
-                    "SamplingPercentageDecreaseTimeout": "00:02:00",
-                    "SamplingPercentageIncreaseTimeout": "00:15:00",
-                    "MovingAverageRatio": "0.25"
+                    "MaxTelemetryItemsPerSecond": "5"
                 },
                 "Fixed": {
                     "SamplingPercentage": 90
-                },
-                "IncludedTypes": "Dependency;Event;Exception;PageView;Request;Trace",
-                "ExcludedTypes": ""
+                }
             },
             "EnableProfiler": true,
             "EnableSqlCommandTextInstrumentation": true,
@@ -119,17 +110,11 @@ Configure Platform Application Insights telemetry behavior inside the `VirtoComm
 }
 ```
 
-`SamplingOptions.Processor`: this setting lets you chose between two sampling methods:
-* **Adaptive sampling**: automatically adjusts the volume of telemetry sent from the SDK in your ASP.NET/ASP.NET Core app, and from Azure Functions. More about this configuring this option [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sampling?tabs=net-core-new#configuring-adaptive-sampling-for-aspnet-applications). 
-* **Fixed-rate sampling**: reduces the volume of telemetry sent from both the application. Unlike adaptive sampling, it reduces telemetry at a fixed rate controlled by `SamplingPercentage` setting. 
+`SamplingOptions.Processor`: this setting lets you choose between two sampling methods:
+* **Adaptive (Rate-limited) sampling**: limits the number of telemetry traces sent per second. Controlled by `MaxTelemetryItemsPerSecond` (default: 5). Maps to `ApplicationInsightsServiceOptions.TracesPerSecond` in Application Insights SDK 3.x. More about sampling [here](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sampling).
+* **Fixed-rate sampling**: sends a fixed proportion of telemetry. Controlled by `SamplingPercentage` (0-100), which is converted to `ApplicationInsightsServiceOptions.SamplingRatio` (0.0-1.0) in Application Insights SDK 3.x.
 
-`IncludedTypes`: a semi-colon delimited list of types that you do want to subject to sampling. Recognized types are: Dependency, Event, Exception, PageView, Request, Trace. The specified types will be sampled; all telemetry of the other types will always be transmitted. All types included by default.
-
-`ExcludedTypes`: A semi-colon delimited list of types that you do not want to be subject to sampling. Recognized types are: Dependency, Event, Exception, PageView, Request, Trace. All telemetry of the specified types is transmitted; the types that aren't specified will be sampled. Empty by default.
-
-`EnableSqlCommandTextInstrumentation`: For SQL calls, the name of the server and database is always collected and stored as the name of the collected DependencyTelemetry. Another field, called data, can contain the full SQL query text. To opt in to SQL Text collection set this setting to `true`.
-
-`IgnoreSqlTelemetryOptions`: Controls Application Insight telemetry processor thats excludes dependency SQL queries by. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
+`IgnoreSqlTelemetryOptions`: Controls the OpenTelemetry processor that excludes dependency SQL queries. Any SQL command name or statement that contains a string from `QueryIgnoreSubstrings` options will be ignored.
 
 `EnableProfiler`: Enables the Application Insights Profiler feature. This feature collects performance data about your application and identifies bottlenecks in your code. The profiler data is collected and uploaded to Application Insights.
 

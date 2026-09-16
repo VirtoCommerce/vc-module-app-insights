@@ -1,54 +1,52 @@
-using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
+using System.Diagnostics;
 using Microsoft.Extensions.Options;
+using OpenTelemetry;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.ApplicationInsights.Data.Telemetry;
 
 /// <summary>
-/// Application insight telemetry processor which exclude all dependency SQL queries related to Hangfire.
+/// OpenTelemetry processor which excludes dependency SQL queries matching configured substrings.
 /// </summary>
-public class IgnoreSqlTelemetryProcessor : ITelemetryProcessor
+public class IgnoreSqlTelemetryProcessor : BaseProcessor<Activity>
 {
     private readonly ApplicationInsightsOptions _options;
 
     /// <summary>
     /// Just for looking at processor options from outside (logging, etc...)
     /// </summary>
-    public IgnoreSqlTelemetryOptions Options
-    {
-        get
-        {
-            return _options.IgnoreSqlTelemetryOptions;
-        }
-    }
+    public IgnoreSqlTelemetryOptions Options => _options.IgnoreSqlTelemetryOptions;
 
-    private ITelemetryProcessor Next { get; set; }
-
-    // Link processors to each other in a chain.
-    public IgnoreSqlTelemetryProcessor(IOptions<ApplicationInsightsOptions> options, ITelemetryProcessor next)
+    public IgnoreSqlTelemetryProcessor(IOptions<ApplicationInsightsOptions> options)
     {
         _options = options.Value;
-        Next = next;
     }
 
-    public void Process(ITelemetry item)
+    public override void OnEnd(Activity activity)
     {
-        if (item is DependencyTelemetry dependencyTelemetry &&
-            dependencyTelemetry.Type == "SQL")
+        if (_options.IgnoreSqlTelemetryOptions == null)
+        {
+            return;
+        }
+
+        var dbSystem = activity?.GetTagItem("db.system")?.ToString();
+        if (dbSystem is not ("mssql" or "microsoft.sql_server"))
+        {
+            return;
+        }
+
+        var statement = activity.GetTagItem("db.statement")?.ToString();
+        if (!statement.IsNullOrEmpty())
         {
             foreach (var substring in _options.IgnoreSqlTelemetryOptions.QueryIgnoreSubstrings)
             {
-                if (!dependencyTelemetry.Data.IsNullOrEmpty() && dependencyTelemetry.Data.Contains(substring))
+                if (statement.Contains(substring))
                 {
-                    // To filter out an item, just terminate the chain:
+                    activity.ActivityTraceFlags &= ~ActivityTraceFlags.Recorded;
                     return;
                 }
             }
         }
-        // Send everything else:
-        Next.Process(item);
     }
 }
