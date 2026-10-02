@@ -10,17 +10,11 @@
     <ProjectReference Include="..\VirtoCommerce.ApplicationInsights.Core\VirtoCommerce.ApplicationInsights.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="2.7.3" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.23.0" />
-    <!--Keep to resolve vulnerability -->
-    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.15.0"/>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0"/>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Telemetry\" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.3" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="5.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.1.2" />
   </ItemGroup>
 </Project>
