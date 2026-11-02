@@ -120,6 +120,17 @@ Configure Platform Application Insights telemetry behavior inside the `VirtoComm
 
 This module supports configuration by config and code. You can read more about configuration [here](https://github.com/serilog-contrib/serilog-sinks-applicationinsights)
 
+### Ignoring Request Telemetry From Other Modules
+
+Other modules can exclude their requests from telemetry without referencing OpenTelemetry or Application Insights SDK. Reference the `VirtoCommerce.ApplicationInsights.Core` package and add a rule in `Module.Initialize`:
+
+```csharp
+// Ignore requests whose 'url.path' contains "/graphql", unless the activity has the "graphql.type" tag
+serviceCollection.AddIgnoreRequestTelemetry("/graphql", exceptWhenTag: "graphql.type");
+```
+
+If the dependency on `VirtoCommerce.ApplicationInsights` is optional, add `VirtoCommerce.ApplicationInsights.Core.dll` to the module's `module.keep` file, so the module still starts when Application Insights module is not installed. SignalR requests (`/pushnotificationhub`) are always ignored.
+
 
 ### Logging Configuration
 

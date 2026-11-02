@@ -2,6 +2,7 @@ using System;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Trace;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
@@ -48,12 +49,15 @@ public static class ServiceCollectionExtensions
             services.AddServiceProfiler();
         }
 
+        // Always ignore SignalR telemetry
+        services.AddIgnoreRequestTelemetry("/pushnotificationhub");
+
         // OpenTelemetry activity processors replaces ITelemetryProcessor/ITelemetryInitializer from 2.x
         services.AddOpenTelemetry()
             .WithTracing(tracing =>
             {
-                // Always ignore SignalR telemetry
-                tracing.AddProcessor(new IgnoreSignalRTelemetryProcessor());
+                // Rules are added by this and other modules via AddIgnoreRequestTelemetry()
+                tracing.AddProcessor(sp => new IgnoreRequestTelemetryProcessor(sp.GetRequiredService<IOptions<IgnoreRequestTelemetryOptions>>()));
                 tracing.AddSource("VirtoCommerce.*");
             })
             .WithMetrics(meter =>
