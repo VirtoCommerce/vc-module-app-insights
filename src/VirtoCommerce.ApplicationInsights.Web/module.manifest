@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
   <id>VirtoCommerce.ApplicationInsights</id>
-  <version>3.1005.0</version>
+  <version>3.1006.0</version>
   <version-tag>
   </version-tag>
-  <platformVersion>3.1071.0-alpha.13395-vcst-4717</platformVersion>
+  <platformVersion>3.1092.0-alpha.13453-vcst-4717</platformVersion>
   <dependencies>
   </dependencies>
   <apps>
