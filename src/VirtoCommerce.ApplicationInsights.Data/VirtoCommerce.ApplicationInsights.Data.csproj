@@ -10,7 +10,7 @@
     <ProjectReference Include="..\VirtoCommerce.ApplicationInsights.Core\VirtoCommerce.ApplicationInsights.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="3.0.1" />
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Profiler" Version="1.0.1-beta.7" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.3" />

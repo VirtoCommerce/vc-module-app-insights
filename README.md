@@ -76,6 +76,8 @@ To enable Code Optimizations, you need to set the `VirtoCommerce:ApplicationInsi
 
 By default, Profiler actively collects traces every hour for 30 seconds or during periods of high CPU or memory usage for 30 seconds. The hourly traces (called sampling) are great for proactive tuning, while the high CPU and memory traces (called triggers) are useful for reactive troubleshooting.
 
+The module uses the OpenTelemetry-based [Azure Monitor Profiler](https://github.com/Azure/azuremonitor-opentelemetry-profiler-net) (`Azure.Monitor.OpenTelemetry.Profiler`, currently in preview), because the classic `Microsoft.ApplicationInsights.Profiler.AspNetCore` package is not compatible with Application Insights SDK 3.x. If the profiler fails to start (for example, the Application Insights resource requires Entra authentication), it is disabled and the error is logged; the platform keeps running.
+
 ## Configuration
 
 The following sections describe how to use extended configuration options of the module. The configuration can be done via `appsettings.json` file or by using code.
@@ -194,7 +196,7 @@ public void Initialize(IServiceCollection serviceCollection)
 1. [Troubleshoot Code Optimizations](https://learn.microsoft.com/en-us/azure/azure-monitor/optimization-insights/code-optimizations-troubleshoot)
 1. [Troubleshoot Application Insights Profiler](https://learn.microsoft.com/en-us/azure/azure-monitor/profiler/profiler-troubleshooting)
 1. TraceUpload.zip which are responsible for uploading the profiler data to Application Insights should be copied to the /app_data/modules/ folder of your Virto Commerce Platform instance.
-1. Set `Serilog__MinimumLevel__Override__Microsoft__ApplicationInsight__Profiler1 to  `Debug` to see profiler logs and errors in the console output.
+1. Set `Serilog__MinimumLevel__Override__Azure.Monitor.OpenTelemetry.Profiler` and `Serilog__MinimumLevel__Override__Microsoft.ApplicationInsights.Profiler` to `Debug` to see profiler logs and errors in the console output.
 
 ## Documentation
 * [AppInsights module user documentation](https://docs.virtocommerce.org/platform/user-guide/application-insights/overview/)

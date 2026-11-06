@@ -1,8 +1,10 @@
 using System;
+using Azure.Monitor.OpenTelemetry.Profiler;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Trace;
 using VirtoCommerce.ApplicationInsights.Core.Telemetry;
 
@@ -22,7 +24,8 @@ public static class ServiceCollectionExtensions
         services.AddOptions<ApplicationInsightsOptions>().Bind(aiVirtoOptionsSection);
 
         // Skip telemetry registration entirely when the connection string is absent
-        if (!HasConnectionString(configuration))
+        var connectionString = GetConnectionString(configuration);
+        if (string.IsNullOrEmpty(connectionString))
         {
             return services;
         }
@@ -46,8 +49,20 @@ public static class ServiceCollectionExtensions
 
         if (aiVirtoOptions.EnableProfiler)
         {
-            services.AddServiceProfiler();
+            // OpenTelemetry-based profiler, compatible with Application Insights SDK 3.x
+            services.AddAzureMonitorProfiler();
         }
+
+        // Report the public request URL (scheme/host from X-Forwarded headers)
+        services.PostConfigureAll<AspNetCoreTraceInstrumentationOptions>(options =>
+        {
+            var enrich = options.EnrichWithHttpResponse;
+            options.EnrichWithHttpResponse = (activity, response) =>
+            {
+                enrich?.Invoke(activity, response);
+                RequestUrlEnricher.Enrich(activity, response.HttpContext.Request);
+            };
+        });
 
         // Always ignore SignalR telemetry
         services.AddIgnoreRequestTelemetry("/pushnotificationhub");
@@ -75,11 +90,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static bool HasConnectionString(IConfiguration configuration)
+    private static string GetConnectionString(IConfiguration configuration)
     {
-        var connectionString = configuration["ApplicationInsights:ConnectionString"]
+        return configuration["ApplicationInsights:ConnectionString"]
             ?? Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
-
-        return !string.IsNullOrEmpty(connectionString);
     }
 }
