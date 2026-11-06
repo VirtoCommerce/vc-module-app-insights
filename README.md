@@ -133,6 +133,27 @@ serviceCollection.AddIgnoreRequestTelemetry("/graphql", exceptWhenTag: "graphql.
 
 If the dependency on `VirtoCommerce.ApplicationInsights` is optional, add `VirtoCommerce.ApplicationInsights.Core.dll` to the module's `module.keep` file, so the module still starts when Application Insights module is not installed. SignalR requests (`/pushnotificationhub`) are always ignored.
 
+### Module Traces and Metrics
+
+Modules expose their own traces and metrics via `ActivitySource` and `Meter`. They are not exported by default: each deployment opts them in with the `OpenTelemetry:Sources` and `OpenTelemetry:Meters` lists:
+
+```json
+{
+  "OpenTelemetry": {
+    "Sources": [ "VirtoCommerce.BackgroundJobs" ],
+    "Meters": [ "VirtoCommerce.BackgroundJobs", "VirtoCommerce.Platform.Caching" ]
+  }
+}
+```
+
+```
+OpenTelemetry__Sources__0=VirtoCommerce.BackgroundJobs
+OpenTelemetry__Meters__0=VirtoCommerce.BackgroundJobs
+OpenTelemetry__Meters__1=VirtoCommerce.Platform.Caching
+```
+
+These are the same settings the [OpenTelemetry module](https://github.com/VirtoCommerce/vc-module-opentelemetry) uses. When both modules are installed, they share a single tracer and meter provider, so one list controls both Application Insights and OTLP export. The values must be JSON arrays (a comma-separated string registers nothing).
+
 
 ### Logging Configuration
 

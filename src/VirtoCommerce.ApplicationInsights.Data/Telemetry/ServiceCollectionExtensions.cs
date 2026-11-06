@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Azure.Monitor.OpenTelemetry.Profiler;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +46,7 @@ public static class ServiceCollectionExtensions
             }
         });
 
-        // The following line enables Application Insights telemetry collection.
+        // The following line enables Application Insights telemetry collection
         services.AddApplicationInsightsTelemetry();
 
         if (aiVirtoOptions.EnableProfiler)
@@ -73,11 +75,20 @@ public static class ServiceCollectionExtensions
             {
                 // Rules are added by this and other modules via AddIgnoreRequestTelemetry()
                 tracing.AddProcessor(sp => new IgnoreRequestTelemetryProcessor(sp.GetRequiredService<IOptions<IgnoreRequestTelemetryOptions>>()));
-                tracing.AddSource("VirtoCommerce.*");
+
+                // Module ActivitySources are opt-in per deployment via "OpenTelemetry:Sources" (shared with the OpenTelemetry module)
+                foreach (var source in GetConfigurationList(configuration, "OpenTelemetry:Sources"))
+                {
+                    tracing.AddSource(source);
+                }
             })
-            .WithMetrics(meter =>
+            .WithMetrics(metrics =>
             {
-                meter.AddMeter("VirtoCommerce.*");
+                // Module Meters are opt-in per deployment via "OpenTelemetry:Meters" (shared with the OpenTelemetry module)
+                foreach (var meter in GetConfigurationList(configuration, "OpenTelemetry:Meters"))
+                {
+                    metrics.AddMeter(meter);
+                }
             });
 
         // Register processors that need DI via post-configure
@@ -94,5 +105,14 @@ public static class ServiceCollectionExtensions
     {
         return configuration["ApplicationInsights:ConnectionString"]
             ?? Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+    }
+
+    private static IEnumerable<string> GetConfigurationList(IConfiguration configuration, string key)
+    {
+        return configuration.GetSection(key)
+            .GetChildren()
+            // AddSource/AddMeter throw on an empty name, a stray empty config entry must not fail module init
+            .Where(x => !string.IsNullOrWhiteSpace(x.Value))
+            .Select(x => x.Value);
     }
 }
