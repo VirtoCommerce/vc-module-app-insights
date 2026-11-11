@@ -20,7 +20,12 @@ public class IgnoreRequestTelemetryProcessor : BaseProcessor<Activity>
 
     public override void OnEnd(Activity activity)
     {
-        var urlPath = activity?.GetTagItem("url.path")?.ToString();
+        if (activity == null)
+        {
+            return;
+        }
+
+        var urlPath = activity.GetTagItem("url.path")?.ToString();
         if (urlPath.IsNullOrEmpty())
         {
             return;
