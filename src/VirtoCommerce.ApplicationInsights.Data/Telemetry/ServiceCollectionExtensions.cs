@@ -56,7 +56,6 @@ public static class ServiceCollectionExtensions
         }
 
         // Report the public request URL (scheme/host from X-Forwarded headers)
-        // and the response code a module asked for via TelemetryTags.ResponseStatusCodeOverride
         services.PostConfigureAll<AspNetCoreTraceInstrumentationOptions>(options =>
         {
             var enrich = options.EnrichWithHttpResponse;
@@ -64,7 +63,6 @@ public static class ServiceCollectionExtensions
             {
                 enrich?.Invoke(activity, response);
                 RequestUrlEnricher.Enrich(activity, response.HttpContext.Request);
-                ResponseStatusCodeEnricher.Enrich(activity);
             };
         });
 
